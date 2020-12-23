@@ -1,25 +1,33 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speech/flutter_speech.dart';
+import 'package:hayakuchi_game/constants/theme_data.dart';
 import 'package:hayakuchi_game/drawer_page.dart';
+import 'package:image/image.dart' as image;
 
 const languages = const [
-  const Language('Japanese', 'ja_JA'),
+  const Language('English', 'en_US'),
 ];
 
 const List<String> advancedThemeList = [
-  'アンドロメダだぞ',
-  '肩固かったから買った肩たたき機',
-  '打者走者勝者走者一掃',
-  '専売特許許可局',
-  '新設診察室視察',
-  '著作者手術中',
-  '除雪車除雪作業中',
-  '貨客船の旅客と旅客機の旅客',
-  '骨粗鬆症訴訟勝訴'
+  'miscellaneous',
+  'prescription',
+  'refrigerator',
+  'otorhinolaryngologist',
+  'entrepreneur',
+  'choir',
+  'cupboard',
+  'cupboard',
+  'pomegranate',
+  'spiel',
+  'tchotchke',
+  'cabernetsauvignon',
+  'filetmignon'
+
 ];
 
 class Language {
@@ -30,7 +38,7 @@ class Language {
 }
 
 class TestPage2 extends StatefulWidget {
-  File imaged;
+  Uint8List imaged;
   var title;
 
   TestPage2({Key key, this.title, this.imaged}) : super(key: key);
@@ -40,6 +48,7 @@ class TestPage2 extends StatefulWidget {
 }
 
 class _TestPage2 extends State<TestPage2> {
+  Uint8List _imageBytes;
 
   SpeechRecognition _speech;
 
@@ -48,7 +57,7 @@ class _TestPage2 extends State<TestPage2> {
 
   String transcription = '';
   String _themeText = '';
-  int _hp = 7;
+  int _hp = 5;
 
   //String _currentLocale = 'en_US';
   Language selectedLang = languages.first;
@@ -78,79 +87,85 @@ class _TestPage2 extends State<TestPage2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Image(
+          image: AssetImage('assets/images/titlelogo.png'),
+        ),
         centerTitle: true,
+        backgroundColor: AppBarColor,
       ),
       drawer: DrawerMenu(),
-      body: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              InkWell(
-                onTap: () => _themeText != '終了!!'? setTongueTwister() : null,
-                child: Container(
-                  child: _themeText != '終了!!'? Icon(Icons.autorenew) : null,
+      body: Container(
+        color: backGroundColor,
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                InkWell(
+                  onTap: () => _themeText != '終了!!'? setTongueTwister() : null,
+                  child: Container(
+                    child: _themeText != '終了!!'? Icon(Icons.autorenew, color: Colors.white,) : null,
+                  ),
                 ),
-              ),
 
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: Center(
-                  child: Text(
-                    _themeText,
-                    style: TextStyle(
-                      fontSize: 20,
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Center(
+                    child: Text(
+                      _themeText,
+                      style: TextStyle(
+                        fontSize: 20, color: Colors.white
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('HP : ',
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
-              Text(_hp.toString(),
-                  style: TextStyle(fontSize: 18, color: Colors.red)),
-            ],
-          ),
-          Container(
-            height: 280,
-            child: Center(
-              child: aaa(),
+              ],
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(5.0),
-            width: 300,
-            color: Colors.grey.shade200,
-            child: Text(transcription),
-          ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _buildButton(
-                  onPressed: _speechRecognitionAvailable && !_isListening
-                      ? () => start()
-                      : null,
-                  label: _isListening ? 'Listening...' : '詠唱開始',
-                ),
-                _buildButton(
-                  onPressed: _isListening ? () => clear() : null,
-                  label: 'やり直し',
-                ),
-                _buildButton(
-                  onPressed: () {
-                    attack();
-                  },
-                  label: '攻撃',
-                ),
-              ])
-        ],
+                Text('HP : ',
+                    style: TextStyle(
+                      fontSize: 18, color: Colors.white
+                    )),
+                Text(_hp.toString(),
+                    style: TextStyle(fontSize: 18, color: Colors.red)),
+              ],
+            ),
+            Container(
+              height: 280,
+              child: Center(
+                child: aaa(),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(5.0),
+              width: 300,
+              color: Colors.grey.shade200,
+              child: Text(transcription),
+            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  _buildButton(
+                    onPressed: _speechRecognitionAvailable && !_isListening
+                        ? () => start()
+                        : null,
+                    label: _isListening ? 'Listening...' : '音声入力',
+                  ),
+                  _buildButton(
+                    onPressed: _isListening ? () => clear() : null,
+                    label: 'やり直し',
+                  ),
+                  _buildButton(
+                    onPressed: () {
+                      attack();
+                    },
+                    label: '送信',
+                  ),
+                ])
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -256,10 +271,44 @@ class _TestPage2 extends State<TestPage2> {
   }
 
   aaa() {
-    if(_hp > 0){
-      return Image.file(widget.imaged);
-    } if(_hp == 0) {
-      return Image.asset('assets/images/aaa.jpg');
+    Uint8List byte = widget.imaged;
+    final image.Image img = image.decodeImage(byte);
+    switch (_hp) {
+
+      case 4:
+        image.grayscale(img);
+        setState(() {
+          _imageBytes = image.encodePng(img);
+        });
+        return Image.memory(_imageBytes);
+
+      case 3:
+        image.gaussianBlur(img, 10);
+        setState(() {
+          _imageBytes = image.encodePng(img);
+        });
+        return Image.memory(_imageBytes);
+
+      case 2:
+        image.emboss(img);
+        setState(() {
+          _imageBytes = image.encodePng(img);
+        });
+        return Image.memory(_imageBytes);
+
+      case 1:
+        image.invert(img);
+        setState(() {
+          _imageBytes = image.encodePng(img);
+        });
+        return Image.memory(_imageBytes);
+        break;
+
+      case 0:
+        return Image.asset('assets/images/aaa.jpg');
+
+      default:
+        return Image.memory(widget.imaged);
     }
   }
 }

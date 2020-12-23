@@ -12,7 +12,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final String title = '音声入力ゲーム';
+    final String title = '英語発音チェッカー';
+
 
     return MaterialApp(
       title: title,
