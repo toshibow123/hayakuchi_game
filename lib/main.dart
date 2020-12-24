@@ -1,7 +1,5 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hayakuchi_game/play_page.dart';
 
 import 'home_page.dart';
 
@@ -13,7 +11,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String title = '英語発音チェッカー';
-
 
     return MaterialApp(
       title: title,

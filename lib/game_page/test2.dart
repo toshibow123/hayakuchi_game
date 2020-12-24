@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speech/flutter_speech.dart';
-import 'package:hayakuchi_game/constants/theme_data.dart';
+import 'file:///C:/Users/ignit/AndroidStudioProjects/hayakuchi_game/lib/constants/theme_data.dart';
 import 'package:hayakuchi_game/drawer_page.dart';
 import 'package:image/image.dart' as image;
 
@@ -251,12 +251,26 @@ class _TestPage2 extends State<TestPage2> {
       await Future.delayed(Duration(milliseconds: 500));
     }
     if (_themeText == transcription) {
-      setState(() => _hp = _hp - 1);
-      setTongueTwister();
+      setState(() {
+        _hp = _hp - 1;
+      });
+      return setTongueTwister();
     }
-    if (_hp <= 0) {
-      //setState(() => widget.imaged = 'images/otukare.jpg');
-      setState(() => _themeText = '終了!!');
+    if (_themeText != transcription) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            content: Text("発音が正しくありません"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -271,44 +285,24 @@ class _TestPage2 extends State<TestPage2> {
   }
 
   aaa() {
-    Uint8List byte = widget.imaged;
-    final image.Image img = image.decodeImage(byte);
-    switch (_hp) {
+    switch (_hp){
+      case 5:
+        return Image.asset('assets/images/bobii.png');
 
       case 4:
-        image.grayscale(img);
-        setState(() {
-          _imageBytes = image.encodePng(img);
-        });
-        return Image.memory(_imageBytes);
+        return Image.asset('assets/images/bobii2.png');
 
       case 3:
-        image.gaussianBlur(img, 10);
-        setState(() {
-          _imageBytes = image.encodePng(img);
-        });
-        return Image.memory(_imageBytes);
+        return Image.asset('assets/images/bobii3.png');
 
       case 2:
-        image.emboss(img);
-        setState(() {
-          _imageBytes = image.encodePng(img);
-        });
-        return Image.memory(_imageBytes);
+        return Image.asset('assets/images/bobii2.png');
 
       case 1:
-        image.invert(img);
-        setState(() {
-          _imageBytes = image.encodePng(img);
-        });
-        return Image.memory(_imageBytes);
-        break;
+        return Image.asset('assets/images/bobu.png');
 
       case 0:
         return Image.asset('assets/images/aaa.jpg');
-
-      default:
-        return Image.memory(widget.imaged);
     }
   }
 }

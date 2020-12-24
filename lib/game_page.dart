@@ -2,9 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:hayakuchi_game/constants/theme_data.dart';
+import 'file:///C:/Users/ignit/AndroidStudioProjects/hayakuchi_game/lib/constants/theme_data.dart';
 import 'package:hayakuchi_game/drawer_page.dart';
-import 'package:hayakuchi_game/play_page.dart';
 import 'file:///C:/Users/ignit/AndroidStudioProjects/hayakuchi_game/lib/game_page/test.dart';
 import 'file:///C:/Users/ignit/AndroidStudioProjects/hayakuchi_game/lib/game_page/test2.dart';
 
@@ -48,7 +47,6 @@ class GamePage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => TestPage(
-                                  imaged: images,
                                   title: title,
                                 )));
                   },
@@ -97,7 +95,6 @@ class GamePage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => TestPage2(
-                              imaged: images,
                               title: title,
                             )));
                   },

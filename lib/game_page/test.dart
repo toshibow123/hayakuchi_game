@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speech/flutter_speech.dart';
-import 'package:hayakuchi_game/constants/theme_data.dart';
+import 'file:///C:/Users/ignit/AndroidStudioProjects/hayakuchi_game/lib/constants/theme_data.dart';
 import 'package:hayakuchi_game/drawer_page.dart';
 import 'package:image/image.dart' as image;
 
@@ -55,17 +55,15 @@ class Language {
 }
 
 class TestPage extends StatefulWidget {
-  Uint8List imaged;
   final String title;
 
-  TestPage({Key key, this.title, this.imaged}) : super(key: key);
+  TestPage({Key key, this.title,}) : super(key: key);
 
   @override
   _TestPage createState() => new _TestPage();
 }
 
 class _TestPage extends State<TestPage> {
-  Uint8List _imageBytes;
 
   SpeechRecognition _speech;
 
@@ -271,7 +269,7 @@ class _TestPage extends State<TestPage> {
         context: context,
         builder: (_) {
           return AlertDialog(
-            content: Text("音声の入力が正しくありません"),
+            content: Text("発音が正しくありません"),
             actions: <Widget>[
               FlatButton(
                 child: Text("OK"),
@@ -299,40 +297,25 @@ class _TestPage extends State<TestPage> {
   }
 
   aaa() {
-    Uint8List byte = widget.imaged;
-    final image.Image img = image.decodeImage(byte);
+    switch (_hp){
+      case 5:
+        return Image.asset('assets/images/bobii.png');
 
-    switch (_hp) {
       case 4:
-        image.grayscale(img);
-        _imageBytes = image.encodePng(img);
-        return Image.memory(_imageBytes);
+        return Image.asset('assets/images/bobii2.png');
 
       case 3:
-        image.gaussianBlur(img, 10);
-        _imageBytes = image.encodePng(img);
-        return Image.memory(_imageBytes);
+        return Image.asset('assets/images/bobii3.png');
 
       case 2:
-        image.emboss(img);
-        setState(() {
-          _imageBytes = image.encodePng(img);
-        });
-        return Image.memory(_imageBytes);
+        return Image.asset('assets/images/bobii2.png');
 
       case 1:
-        image.invert(img);
-        setState(() {
-          _imageBytes = image.encodePng(img);
-        });
-        return Image.memory(_imageBytes);
-        break;
+        return Image.asset('assets/images/bobu.png');
 
       case 0:
         return Image.asset('assets/images/aaa.jpg');
+    }
 
-      default:
-        return Image.memory(widget.imaged);
     }
   }
-}
